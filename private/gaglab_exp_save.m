@@ -48,8 +48,9 @@ if ~isempty(GL.Experiment.Subject)
 			R = [R, r];
 			clear r
 		end
-		if length(GL.Sessions{i}.EyeData)
-			[e(1:length(GL.Sessions{i}.EyeData)).Experiment] = deal(GL.Experiment.Name);
+		if ~isempty(GL.Sessions{i}.EyeData.value)
+			e = cell2struct(num2cell(GL.Sessions{i}.EyeData.value)', GL.Sessions{i}.EyeData.name);
+			[e.Experiment] = deal(GL.Experiment.Name);
 			if ~isempty(GL.Experiment.Parameter)
 				[e.Parameter] = deal(GL.Experiment.Parameter);
 			end
@@ -58,12 +59,7 @@ if ~isempty(GL.Experiment.Subject)
 			[e.Series] = deal(GL.Experiment.Series);
 			[e.Date] = deal(timestr);
 			[e.Session] = deal(i);
-			[e.Time] = deal(GL.Sessions{i}.EyeData.Time);
-			[e.X] = deal(GL.Sessions{i}.EyeData.X);
-			[e.Y] = deal(GL.Sessions{i}.EyeData.Y);
-			[e.Pupil] = deal(GL.Sessions{i}.EyeData.Pupil);
-			[e.Status] = deal(GL.Sessions{i}.EyeData.Status);
-			E = [E, e];
+			E = [E, e]; %#ok<AGROW>
 			clear e
 		end
 	end

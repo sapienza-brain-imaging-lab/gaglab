@@ -43,7 +43,7 @@ else
 end
 
 gaglab_exp_time('Restart', t0 + starttime);
-gaglab_eye_start(GL.Eye);
+GL.Events.EyeData = gaglab_eye_start(GL.Eye);
 GL.Events.Key = [];
 GL.Events.IKey = 1;
 GL.Events.Response = [];

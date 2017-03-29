@@ -2,15 +2,12 @@ function data = gaglab_eye_stop (E)
 	switch E.Type
 		case 'ASL'
 			data = cgtracker('stop');
-			if isequal(data, 0)
-				data = struct('Time', {}, 'X', {}, 'Y', {}, 'Pupil', {}, 'Status', {});
-			else
-				data = struct('Time', num2cell(gaglab_exp_time([data.Timestamp])), ...
-					'X', {data.X}, ...
-					'Y', {data.Y}, ...
-					'Pupil', {data.Pupil}, ...
-					'Status', {data.Status});
+			if ~isequal(data, 0)
+				data = [gaglab_exp_time([data.Timestamp]); data.X; data.Y; data.Pupil; data.Status]';
 			end
+		case 'LiveTrack'
+			gaglab_livetrack('Stop');
+			data = [];
 		case 'none'
 			data = [];
 		otherwise
