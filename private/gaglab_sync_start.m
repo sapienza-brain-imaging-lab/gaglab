@@ -8,9 +8,19 @@ end
 SyncSetup.HPort = 0;
 if SyncSetup.Port == 0, SyncSetup.UseSync = 0; end
 if SyncSetup.UseSync == 0, return; end
+
+if ~isfield(SyncSetup, 'Mode')
+	SyncSetup.Mode = 'allegra';
+end
+
 try
 	SyncSetup.HPort = CogSerial('open', sprintf('com%d', SyncSetup.Port));
-	attr.Baud = 9600;
+	switch SyncSetup.Mode
+		case 'allegra'
+			attr.Baud = 9600;
+		case 'achieva'
+			attr.Baud = 57600;
+	end
 	attr.Parity = 0;
 	attr.StopBits = 0;
 	attr.ByteSize = 8;
