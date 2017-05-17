@@ -52,7 +52,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Initialize default paths
-SystemPath = fileparts(fileparts(which('gaglab')));
+% SystemPath = fileparts(fileparts(which('gaglab')));
 if ispref('GagLab', 'path') && exist(fileparts(getpref('GagLab', 'path')), 'dir')
 	LocalPath = getpref('GagLab', 'path');
 else
@@ -69,11 +69,17 @@ else
 	LocalPath = fullfile(LocalPath, 'GagLab');
 	setpref('GagLab', 'path', LocalPath);
 end
+if ispref('GagLab', 'library') && exist(fileparts(getpref('GagLab', 'library')), 'dir')
+	ExplibPath = fullfile(getpref('GagLab', 'library'), 'v1');
+else
+	ExplibPath = '';
+end
 
 GL.ResultsPath    = fullfile(LocalPath, 'Results');
 GL.LogPath        = fullfile(LocalPath, 'Log');
 GL.SetupPath      = fullfile(LocalPath, 'Setup', 'v1');
 GL.ExperimentPath = fullfile(LocalPath, 'Experiments', 'v1');
+GL.ExperimentLib  = ExplibPath;
 GL.ScreenDumpPath = fullfile(LocalPath, 'Screen Dumps');
 
 gaglab_util_mkdir(GL.ResultsPath);
