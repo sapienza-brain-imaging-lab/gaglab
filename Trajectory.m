@@ -140,17 +140,17 @@ function obj = MotionComponent (type, speed, a, b)
 		);
 	switch type
 		case 'translation'
-			error(nargchk(3,3,nargin,'struct'));
+			narginchk(3,3);
 			set_speed(speed);
 			set_dir(a);
 		case 'rotation'
-			error(nargchk(3,4,nargin,'struct'));
+			narginchk(3,4);
 			if nargin < 4, b = [0 0 0]; end
 			set_speed(speed);
 			set_dir(a);
 			set_center(b);
 		case 'dilation'
-			error(nargchk(2,3,nargin,'struct'));
+			narginchk(2,3);
 			if nargin < 3, a = [0 0 0]; end
 			set_speed(speed);
 			set_center(a);

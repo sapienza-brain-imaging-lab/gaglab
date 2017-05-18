@@ -82,7 +82,7 @@ end
 
 % If the XID device is Lumina and you specified to use sync but with a
 % serial port = 0, then use the Lumina scanner input
-if strcmpi(GL.Response.Device, 'xid') & GL.Setup.Sync.UseSync & ~GL.Sync.Port
+if strcmpi(GL.Response.Device, 'xid') && GL.Setup.Sync.UseSync && ~GL.Sync.Port
 	if isequal(gaglab_xid('model'), '0')
 		GL.Sync.UseSync = 1;
 	end

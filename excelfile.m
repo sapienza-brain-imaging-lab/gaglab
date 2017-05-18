@@ -54,7 +54,7 @@ classdef excelfile
 				end
 			else
 				obj.filename = abspath(filename);
-				[p,f,e]  = fileparts(obj.filename);
+				[~,~,e]  = fileparts(obj.filename);
 				switch e
 					case '.xlsx'
 						obj.wbook = org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -77,7 +77,7 @@ classdef excelfile
 		end
 		
 		function obj = save (obj, filename)
-			error(nargchk(1,2,nargin,'struct'));
+			narginchk(1,2);
 			if ~isa(obj, 'excelfile')
 				error('excelfile:syntax', 'Invalid call.');
 			end
@@ -98,7 +98,7 @@ classdef excelfile
 			% or can be omitted if you want to read all worksheets. In this cases, DATA
 			% will be a cell array of cell arrays of data.
 			
-			error(nargchk(1,2,nargin,'struct'));
+			narginchk(1,2);
 			if ~isa(obj, 'excelfile')
 				error('excelfile:syntax', 'Invalid call.');
 			end
@@ -170,7 +170,7 @@ classdef excelfile
 			% given in DATA to the worksheet named SHEET in the Excel workbook
 			% WORKBOOK. The worksheet and eventually the workbook are created if necessary.
 			
-			error(nargchk(3,3,nargin,'struct'));
+			narginchk(3,3);
 			if ~isa(obj, 'excelfile')
 				error('excelfile:syntax', 'Invalid call.');
 			end
@@ -267,13 +267,13 @@ classdef excelfile
 			%      sheet     name of the worksheet where the table is found
 			%      data      structure array containing table data
 			
-			error(nargchk(1,3,nargin,'struct'));
+			narginchk(1,3);
 			if ~isa(obj, 'excelfile')
 				error('excelfile:syntax', 'Invalid call.');
 			end
 			if nargin == 1 || isempty(sheetname)
 				sheetname = sheets(obj);
-			elseif ischar(sheetname) && ~isempty(sheetname) && ndims(sheetname) == 2 && size(sheetname,2) == numel(sheetname)
+			elseif ischar(sheetname) && ~isempty(sheetname) && ismatrix(sheetname) && size(sheetname,2) == numel(sheetname)
 				sheetname = cellstr(sheetname);
 			elseif ~iscellstr(sheetname)
 				error('excelfile:sheetname', 'Invalid sheet name.');
@@ -319,7 +319,7 @@ classdef excelfile
 			% tables. In this case, specifying names for the tables is mandatory, and N
 			% must be a cell array of strings specifying table names.
 			
-			error(nargchk(2,4,nargin,'struct'));
+			narginchk(2,4);
 			if ~isa(obj, 'excelfile')
 				error('excelfile:syntax', 'Invalid call.');
 			end
@@ -386,7 +386,7 @@ classdef excelfile
 				v = struct('sheet', sheetname, 'name', tablename, 'contents', data);
 			end
 			
-			[sheetname, a, idx] = unique({v.sheet});
+			[sheetname, ~, idx] = unique({v.sheet});
 			data = cell(size(sheetname));
 			bold = cell(size(sheetname));
 			italic = cell(size(sheetname));
@@ -416,7 +416,7 @@ classdef excelfile
 		end
 		
 		function setsimplestyles (obj, sheetname, bold, italic)
-			error(nargchk(3,4,nargin,'struct'));
+			narginchk(3,4);
 			if ~isa(obj, 'excelfile')
 				error('excelfile:syntax', 'Invalid call.');
 			end
@@ -663,7 +663,7 @@ function fname = abspath (fname, cwd)
 	%   See also PARTIALPATH, FULLFILE, FILEPARTS.
 	%
 
-	error(nargchk(1,2,nargin,'struct'));
+	narginchk(1,2);
 	validateattributes(fname, {'char'}, {'row', 'nonempty'});
 	f = java.io.File(fname);
 	if ~isAbsolute(f)
@@ -680,14 +680,13 @@ end
 
 function [varargout] = validate_filename (str, varargin)
 	j = strcmp(varargin, 'wildcards');
-	varargin(j) = [];
 	expandwildcards = any(j);
 
 	str = abspath(str);
 	
 	if expandwildcards
 		[p,f,e] = fileparts(str);
-		if any(ismember([f,e], '*'));
+		if any(ismember([f,e], '*'))
 			d = dir(str);
 			if isempty(d)
 				throwAsCaller(MException('MATLAB:FileIO:FileNotFound', 'No files found: ''%s''.', str));
@@ -700,7 +699,7 @@ function [varargout] = validate_filename (str, varargin)
 				case 2
 					varargout = {p, {d.name}};
 				otherwise
-					[tmp,f,e] = cellfun(@fileparts, {d.name}, 'UniformOutput', false);
+					[~,f,e] = cellfun(@fileparts, {d.name}, 'UniformOutput', false);
 					varargout = {p, f, e};
 			end
 		else

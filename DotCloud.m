@@ -124,7 +124,7 @@ classdef DotCloud < hgsetget
 		end
 		
 		function set.backColor (D, x)
-			if isequalwithequalnans(x, NaN)
+			if isequaln(x, NaN)
 				D.backColor = NaN;
 			else
 				D.backColor = bil.validate.numeric(x, 'finite', 'size', [1 3], '>=', 0, '<=', 1);
@@ -214,7 +214,7 @@ classdef DotCloud < hgsetget
 			if D.stimulus
 				ClearStimulus(D.stimulus);
 			end
-			if ~isequalwithequalnans(D.backColor, NaN)
+			if ~isequaln(D.backColor, NaN)
 				PenColor(D.stimulus, D.backColor);
 				FillEllipse(D.stimulus, D.apertureCenter, [D.apertureDiameter, D.apertureDiameter]);
 			end
