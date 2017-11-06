@@ -168,8 +168,11 @@ function Parameter_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of Parameter as text
 %        str2double(get(hObject,'String')) returns contents of Parameter as a double
 x = get(hObject,'String');
-x = eval(['[' x ']'], 'x');
-gaglabcmd('Parameters', x);
+v = str2num(x);
+if isempty(v)
+	v = x;
+end
+gaglabcmd('Parameters', v);
 
 function Study_Callback(hObject, eventdata, handles)
 % hObject    handle to Study (see GCBO)
