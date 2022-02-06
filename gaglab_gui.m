@@ -133,7 +133,7 @@ units = get(handles.GagLabWindow, 'units');
 set(handles.GagLabWindow, 'units', 'pixels');
 pos = get(handles.GagLabWindow, 'CurrentPoint');
 set(handles.GagLabWindow, 'units', units);
-set(handles.ExperimentList, 'Pos', pos, 'Visible', 'on');
+set(handles.ExperimentList, 'Position', pos, 'Visible', 'on');
 
 % --- Executes on selection change in Experiment.
 function Experiment_Callback(hObject, eventdata, handles)
